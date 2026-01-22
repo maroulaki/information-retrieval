@@ -10,11 +10,34 @@ using System.Windows.Forms;
 
 namespace lucengine
 {
-    public partial class Form1 : Form
+    public partial class lucengine : Form
     {
-        public Form1()
+        public lucengine()
         {
             InitializeComponent();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            indexButton.Enabled = true;
+        }
+
+        private void IndexButton_Click(object sender, EventArgs e)
+        {
+            bool useBM25 = false;
+            if (BM25Toggle.Text.Equals("BM25"))
+            {
+                useBM25 = true;
+            }
+            
+            searchPanel.Enabled = true;
+            searchBox.Clear();
+            indexPanel.Enabled = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
