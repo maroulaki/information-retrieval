@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.logo = new System.Windows.Forms.PictureBox();
             this.indexPanel = new System.Windows.Forms.Panel();
             this.BM25Toggle = new System.Windows.Forms.ComboBox();
             this.indexButton = new System.Windows.Forms.Button();
@@ -37,20 +36,11 @@
             this.searchPanel = new System.Windows.Forms.Panel();
             this.searchButton = new System.Windows.Forms.Button();
             this.exportButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
+            this.logo = new System.Windows.Forms.PictureBox();
             this.indexPanel.SuspendLayout();
             this.searchPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.SuspendLayout();
-            // 
-            // logo
-            // 
-            this.logo.Image = global::lucengine.Properties.Resources.logo;
-            this.logo.Location = new System.Drawing.Point(12, 12);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(325, 95);
-            this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.logo.TabIndex = 0;
-            this.logo.TabStop = false;
             // 
             // indexPanel
             // 
@@ -63,7 +53,7 @@
             // 
             // BM25Toggle
             // 
-            this.BM25Toggle.BackColor = System.Drawing.Color.LightCyan;
+            this.BM25Toggle.BackColor = System.Drawing.Color.PowderBlue;
             this.BM25Toggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BM25Toggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BM25Toggle.FormattingEnabled = true;
@@ -102,9 +92,9 @@
             // 
             // searchBox
             // 
-            this.searchBox.BackColor = System.Drawing.Color.LightCyan;
+            this.searchBox.BackColor = System.Drawing.Color.PowderBlue;
             this.searchBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchBox.Location = new System.Drawing.Point(3, 3);
+            this.searchBox.Location = new System.Drawing.Point(3, 5);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(272, 22);
             this.searchBox.TabIndex = 3;
@@ -129,7 +119,7 @@
             this.searchButton.ForeColor = System.Drawing.Color.White;
             this.searchButton.Location = new System.Drawing.Point(281, 3);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(97, 22);
+            this.searchButton.Size = new System.Drawing.Size(97, 24);
             this.searchButton.TabIndex = 4;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = false;
@@ -144,16 +134,26 @@
             this.exportButton.ForeColor = System.Drawing.Color.White;
             this.exportButton.Location = new System.Drawing.Point(847, 3);
             this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(187, 22);
+            this.exportButton.Size = new System.Drawing.Size(187, 24);
             this.exportButton.TabIndex = 6;
             this.exportButton.Text = "Export";
             this.exportButton.UseVisualStyleBackColor = false;
+            // 
+            // logo
+            // 
+            this.logo.Image = global::lucengine.Properties.Resources.imageedit_1_4010139320;
+            this.logo.Location = new System.Drawing.Point(12, 12);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(325, 95);
+            this.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logo.TabIndex = 0;
+            this.logo.TabStop = false;
             // 
             // lucengine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightCyan;
+            this.BackColor = System.Drawing.Color.DarkSlateGray;
             this.ClientSize = new System.Drawing.Size(1064, 881);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -162,10 +162,10 @@
             this.Name = "lucengine";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "lucengine";
-            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.indexPanel.ResumeLayout(false);
             this.searchPanel.ResumeLayout(false);
             this.searchPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.ResumeLayout(false);
 
         }

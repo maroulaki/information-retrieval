@@ -29,7 +29,8 @@ namespace lucengine
             {
                 useBM25 = true;
             }
-            
+            Indexer.CreateIndex(useBM25);
+
             searchPanel.Enabled = true;
             searchBox.Clear();
             indexPanel.Enabled = false;
