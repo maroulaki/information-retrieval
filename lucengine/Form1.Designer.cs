@@ -29,16 +29,19 @@
         private void InitializeComponent()
         {
             this.indexPanel = new System.Windows.Forms.Panel();
-            this.BM25Toggle = new System.Windows.Forms.ComboBox();
             this.indexButton = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.BM25Toggle = new System.Windows.Forms.ComboBox();
+            this.resultsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.searchPanel = new System.Windows.Forms.Panel();
-            this.searchButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.articleNo = new System.Windows.Forms.NumericUpDown();
             this.exportButton = new System.Windows.Forms.Button();
+            this.searchButton = new System.Windows.Forms.Button();
             this.logo = new System.Windows.Forms.PictureBox();
             this.indexPanel.SuspendLayout();
             this.searchPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.articleNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,21 +53,6 @@
             this.indexPanel.Name = "indexPanel";
             this.indexPanel.Size = new System.Drawing.Size(210, 76);
             this.indexPanel.TabIndex = 1;
-            // 
-            // BM25Toggle
-            // 
-            this.BM25Toggle.BackColor = System.Drawing.Color.PowderBlue;
-            this.BM25Toggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BM25Toggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BM25Toggle.FormattingEnabled = true;
-            this.BM25Toggle.Items.AddRange(new object[] {
-            "Standard",
-            "BM25"});
-            this.BM25Toggle.Location = new System.Drawing.Point(17, 19);
-            this.BM25Toggle.Name = "BM25Toggle";
-            this.BM25Toggle.Size = new System.Drawing.Size(187, 24);
-            this.BM25Toggle.TabIndex = 2;
-            this.BM25Toggle.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // indexButton
             // 
@@ -82,13 +70,31 @@
             this.indexButton.UseVisualStyleBackColor = false;
             this.indexButton.Click += new System.EventHandler(this.IndexButton_Click);
             // 
-            // flowLayoutPanel1
+            // BM25Toggle
             // 
-            this.flowLayoutPanel1.Enabled = false;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 178);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1040, 691);
-            this.flowLayoutPanel1.TabIndex = 2;
+            this.BM25Toggle.BackColor = System.Drawing.Color.PowderBlue;
+            this.BM25Toggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BM25Toggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BM25Toggle.FormattingEnabled = true;
+            this.BM25Toggle.Items.AddRange(new object[] {
+            "Standard",
+            "BM25"});
+            this.BM25Toggle.Location = new System.Drawing.Point(17, 19);
+            this.BM25Toggle.Name = "BM25Toggle";
+            this.BM25Toggle.Size = new System.Drawing.Size(187, 24);
+            this.BM25Toggle.TabIndex = 2;
+            this.BM25Toggle.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // resultsPanel
+            // 
+            this.resultsPanel.AutoScroll = true;
+            this.resultsPanel.Enabled = false;
+            this.resultsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.resultsPanel.Location = new System.Drawing.Point(12, 178);
+            this.resultsPanel.Name = "resultsPanel";
+            this.resultsPanel.Size = new System.Drawing.Size(1040, 691);
+            this.resultsPanel.TabIndex = 2;
+            this.resultsPanel.WrapContents = false;
             // 
             // searchBox
             // 
@@ -101,6 +107,8 @@
             // 
             // searchPanel
             // 
+            this.searchPanel.Controls.Add(this.label1);
+            this.searchPanel.Controls.Add(this.articleNo);
             this.searchPanel.Controls.Add(this.exportButton);
             this.searchPanel.Controls.Add(this.searchButton);
             this.searchPanel.Controls.Add(this.searchBox);
@@ -110,19 +118,40 @@
             this.searchPanel.Size = new System.Drawing.Size(1040, 41);
             this.searchPanel.TabIndex = 5;
             // 
-            // searchButton
+            // label1
             // 
-            this.searchButton.BackColor = System.Drawing.Color.CadetBlue;
-            this.searchButton.FlatAppearance.BorderSize = 0;
-            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchButton.ForeColor = System.Drawing.Color.White;
-            this.searchButton.Location = new System.Drawing.Point(281, 3);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(97, 24);
-            this.searchButton.TabIndex = 4;
-            this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = false;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(281, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 16);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Top:";
+            // 
+            // articleNo
+            // 
+            this.articleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.articleNo.Location = new System.Drawing.Point(326, 6);
+            this.articleNo.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+            this.articleNo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.articleNo.Name = "articleNo";
+            this.articleNo.Size = new System.Drawing.Size(43, 22);
+            this.articleNo.TabIndex = 7;
+            this.articleNo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.articleNo.ValueChanged += new System.EventHandler(this.articleNo_ValueChanged);
             // 
             // exportButton
             // 
@@ -132,12 +161,27 @@
             this.exportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exportButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exportButton.ForeColor = System.Drawing.Color.White;
-            this.exportButton.Location = new System.Drawing.Point(847, 3);
+            this.exportButton.Location = new System.Drawing.Point(847, 5);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(187, 24);
             this.exportButton.TabIndex = 6;
             this.exportButton.Text = "Export";
             this.exportButton.UseVisualStyleBackColor = false;
+            // 
+            // searchButton
+            // 
+            this.searchButton.BackColor = System.Drawing.Color.CadetBlue;
+            this.searchButton.FlatAppearance.BorderSize = 0;
+            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchButton.ForeColor = System.Drawing.Color.White;
+            this.searchButton.Location = new System.Drawing.Point(375, 4);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(97, 24);
+            this.searchButton.TabIndex = 4;
+            this.searchButton.Text = "Search";
+            this.searchButton.UseVisualStyleBackColor = false;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // logo
             // 
@@ -156,7 +200,7 @@
             this.BackColor = System.Drawing.Color.DarkSlateGray;
             this.ClientSize = new System.Drawing.Size(1064, 881);
             this.Controls.Add(this.searchPanel);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.resultsPanel);
             this.Controls.Add(this.indexPanel);
             this.Controls.Add(this.logo);
             this.Name = "lucengine";
@@ -165,6 +209,7 @@
             this.indexPanel.ResumeLayout(false);
             this.searchPanel.ResumeLayout(false);
             this.searchPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.articleNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.ResumeLayout(false);
 
@@ -176,11 +221,13 @@
         private System.Windows.Forms.Panel indexPanel;
         private System.Windows.Forms.ComboBox BM25Toggle;
         private System.Windows.Forms.Button indexButton;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel resultsPanel;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Panel searchPanel;
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.Button exportButton;
+        private System.Windows.Forms.NumericUpDown articleNo;
+        private System.Windows.Forms.Label label1;
     }
 }
 

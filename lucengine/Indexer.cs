@@ -9,33 +9,53 @@ using System.Text;
 using System.Threading.Tasks;
 using Lucene.Net.Index;
 using Lucene.Net.Documents;
+using System.Diagnostics.Eventing.Reader;
 
 namespace lucengine
 {
-    public abstract class Indexer
+    public class Indexer
     {
-        public static void CreateIndex(bool useBM25)
+        public static void CreateIndex()
         {
             // Create Directory
-            Lucene.Net.Store.Directory directory = new RAMDirectory();
+            if (Globals.useBM25 && Globals.BM25Dir != null)
+            {
+                Globals.BM25Dir.Dispose();
+            }
+            else if (!Globals.useBM25 && Globals.StandardDir != null)
+            {
+                Globals.StandardDir.Dispose();
+            }
+            RAMDirectory directory = new RAMDirectory();
 
             // Load common_words.txt
-            var commonWordsFile = new StreamReader("cacm/common_words.txt");
+            StreamReader commonWordsFile = new StreamReader("cacm/common_words.txt");
             CharArraySet stopWordsSet = WordlistLoader.GetWordSet(commonWordsFile, Lucene.Net.Util.LuceneVersion.LUCENE_48);
             commonWordsFile.Close();
 
             // Initialize the analyzer and IndexWriter
             CACMAnalyzer analyzer = new CACMAnalyzer(stopWordsSet);
+            Globals.Analyzer = analyzer;
             IndexWriterConfig config = new IndexWriterConfig(Lucene.Net.Util.LuceneVersion.LUCENE_48, analyzer);
-            if (useBM25) {
+            if (Globals.useBM25) {
                 config.Similarity = new Lucene.Net.Search.Similarities.BM25Similarity();
             } 
             IndexWriter indexWriter = new IndexWriter(directory, config);
+
+            // Adding documents
             foreach (Document doc in ParseCACM("cacm/cacm.all")) {
                 indexWriter.AddDocument(doc);
             }
-
             indexWriter.Commit();
+
+            // Saving Index
+            if (Globals.useBM25)
+            {
+                Globals.BM25Dir = directory;
+            } else {
+                Globals.StandardDir = directory;
+            }
+           
         }
 
         private static IEnumerable<Document> ParseCACM(string path)

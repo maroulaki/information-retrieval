@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lucene.Net.Store;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace lucengine
 {
     public class Globals
     {
-        //public bool useBM25;
+        public static bool useBM25 { get; set; }
+        public static RAMDirectory StandardDir { get; set; }
+        public static RAMDirectory BM25Dir { get; set; }
+        public static CACMAnalyzer Analyzer { get; set; }
     }
 }
