@@ -54,9 +54,11 @@ namespace lucengine
         {
             resultsPanel.SuspendLayout();
 
+            // Clear past results
             foreach (Control c  in resultsPanel.Controls) c.Dispose();
             resultsPanel.Controls.Clear();
 
+            // Get results from Searcher class
             IEnumerable<Document> results = Searcher.SearchIndex(query, topNo);
 
             if ((results == null) || !results.Any())
@@ -66,6 +68,7 @@ namespace lucengine
                 return;
             }
 
+            // Place panels with each article inside the main results panel
             foreach (Document doc in results) {
                 Panel articlePanel = DrawArticlePanel(doc);
                 resultsPanel.Controls.Add(articlePanel);
@@ -75,52 +78,61 @@ namespace lucengine
         }
         private Panel DrawArticlePanel(Document doc)
         {
-            string title = doc.Get("title");
-            string authors = doc.Get("authors");
-            string abstractText = doc.Get("abstract");
+            //// Get article info
+            //string title = doc.Get("title");
+            //string authors = doc.Get("authors");
+            
 
-            if (abstractText.Length > 200) abstractText = abstractText.Substring(0, 200) + "...";
-
-            // --- Container Panel ---
+            // Construct panel
             Panel panel = new Panel();
-            panel.Width = resultsPanel.Width - 25; // Account for scrollbar
-            panel.Height = 150; // Fixed height as requested
+            panel.Width = resultsPanel.Width - 25; 
+            panel.Height = 150; 
             panel.BorderStyle = BorderStyle.None;
             panel.Padding = new Padding(5);
             panel.BackColor = Color.Transparent;
 
-            // --- Title Label ---
+            // Title label
             Label labelTitle = new Label();
-            labelTitle.Text = title;
-            labelTitle.Font = new Font("Segoe UI", 12, FontStyle.Bold); // Bold Title
-            labelTitle.AutoSize = true; // Let it grow if title is long
-            labelTitle.MaximumSize = new Size(panel.Width - 10, 0); // Wrap text
+            labelTitle.Text = doc.Get("title");
+            labelTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold); 
+            labelTitle.AutoSize = true; 
+            labelTitle.MaximumSize = new Size(panel.Width - 10, 0); 
             labelTitle.Location = new Point(5, 5);
             labelTitle.ForeColor = Color.White;
-
-            // --- Author Label ---
-            Label lblAuthor = new Label();
-            lblAuthor.Text = "By: " + authors;
-            lblAuthor.Font = new Font("Segoe UI", 9, FontStyle.Italic);
-            lblAuthor.ForeColor = Color.White;
-            lblAuthor.AutoSize = true;
-            lblAuthor.Location = new Point(5, labelTitle.Bottom + 5); // Place below title
-
-            // --- Abstract RichTextBox ---
-            RichTextBox rtbAbstract = new RichTextBox();
-            rtbAbstract.Text = abstractText;
-            rtbAbstract.ReadOnly = true;
-            rtbAbstract.BackColor = Color.DarkSlateGray; // Make it look like a label
-            rtbAbstract.BorderStyle = BorderStyle.None;
-            rtbAbstract.Location = new Point(5, lblAuthor.Bottom + 10); // Place below author
-            rtbAbstract.Width = panel.Width - 15;
-            rtbAbstract.Height = panel.Height - rtbAbstract.Top - 5; // Fill remaining space
-            rtbAbstract.ScrollBars = RichTextBoxScrollBars.None; // Hide scrolls for cleaner look
-
-            // --- Add Controls to Panel ---
             panel.Controls.Add(labelTitle);
-            panel.Controls.Add(lblAuthor);
-            panel.Controls.Add(rtbAbstract);
+
+            // Authors Label 
+            Label labelAuthors = new Label();
+            labelAuthors.Text = string.IsNullOrEmpty(doc.Get("authors")) ? "Unknown Authors" : doc.Get("authors");
+            labelAuthors.Font = new Font("Segoe UI", 10);
+            labelAuthors.ForeColor = Color.LightGray;
+            labelAuthors.AutoSize = true;
+            labelAuthors.Location = new Point(5, labelTitle.Bottom + 5);
+            panel.Controls.Add(labelAuthors);
+
+            // Abstract text
+            RichTextBox textboxAbstract = new RichTextBox();
+
+            string abstractText = doc.Get("abstract");
+
+            // Trim abstract
+            if (abstractText.Length > 200) abstractText = abstractText.Substring(0, 200) + "...";
+            textboxAbstract.Text = abstractText;
+            textboxAbstract.ForeColor = Color.White;
+            textboxAbstract.ReadOnly = true;
+            textboxAbstract.BackColor = Color.DarkSlateGray; 
+            textboxAbstract.BorderStyle = BorderStyle.None;
+            textboxAbstract.Location = new Point(5, labelAuthors.Bottom + 10); 
+            textboxAbstract.Width = panel.Width - 15;
+            // textboxAbstract.Height = panel.Height - textboxAbstract.Top - 5; 
+            textboxAbstract.ScrollBars = RichTextBoxScrollBars.None; 
+            textboxAbstract.Font = new Font("Segoe UI", 12);
+            panel.Controls.Add(textboxAbstract);
+
+            //// Add controls to panel and return it
+            //panel.Controls.Add(labelTitle);
+            //panel.Controls.Add(labelAuthors);
+            //panel.Controls.Add(textboxAbstract);
 
             return panel;
         }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Lucene.Net.Index;
 using Lucene.Net.Documents;
 using System.Diagnostics.Eventing.Reader;
+using System.Windows.Forms;
 
 namespace lucengine
 {
@@ -44,9 +45,10 @@ namespace lucengine
 
             // Adding documents
             foreach (Document doc in ParseCACM("cacm/cacm.all")) {
-                indexWriter.AddDocument(doc);
+                indexWriter.UpdateDocument(new Term("id", doc.Get("id")), doc);
             }
             indexWriter.Commit();
+            indexWriter.Dispose();
 
             // Saving Index
             if (Globals.useBM25)
