@@ -60,7 +60,7 @@
             this.indexButton.Enabled = false;
             this.indexButton.FlatAppearance.BorderSize = 0;
             this.indexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.indexButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.indexButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.indexButton.ForeColor = System.Drawing.Color.White;
             this.indexButton.Location = new System.Drawing.Point(17, 49);
             this.indexButton.Name = "indexButton";
@@ -74,14 +74,14 @@
             // 
             this.BM25Toggle.BackColor = System.Drawing.Color.PowderBlue;
             this.BM25Toggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BM25Toggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BM25Toggle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BM25Toggle.FormattingEnabled = true;
             this.BM25Toggle.Items.AddRange(new object[] {
             "Standard",
             "BM25"});
             this.BM25Toggle.Location = new System.Drawing.Point(17, 19);
             this.BM25Toggle.Name = "BM25Toggle";
-            this.BM25Toggle.Size = new System.Drawing.Size(187, 24);
+            this.BM25Toggle.Size = new System.Drawing.Size(187, 25);
             this.BM25Toggle.TabIndex = 2;
             this.BM25Toggle.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -99,10 +99,10 @@
             // searchBox
             // 
             this.searchBox.BackColor = System.Drawing.Color.PowderBlue;
-            this.searchBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchBox.Location = new System.Drawing.Point(3, 5);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(272, 22);
+            this.searchBox.Size = new System.Drawing.Size(272, 25);
             this.searchBox.TabIndex = 3;
             // 
             // searchPanel
@@ -117,21 +117,22 @@
             this.searchPanel.Name = "searchPanel";
             this.searchPanel.Size = new System.Drawing.Size(1040, 41);
             this.searchPanel.TabIndex = 5;
+            this.searchPanel.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(281, 7);
+            this.label1.Location = new System.Drawing.Point(290, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 16);
+            this.label1.Size = new System.Drawing.Size(35, 17);
             this.label1.TabIndex = 8;
             this.label1.Text = "Top:";
             // 
             // articleNo
             // 
-            this.articleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.articleNo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.articleNo.Location = new System.Drawing.Point(326, 6);
             this.articleNo.Maximum = new decimal(new int[] {
             64,
@@ -144,7 +145,7 @@
             0,
             0});
             this.articleNo.Name = "articleNo";
-            this.articleNo.Size = new System.Drawing.Size(43, 22);
+            this.articleNo.Size = new System.Drawing.Size(43, 25);
             this.articleNo.TabIndex = 7;
             this.articleNo.Value = new decimal(new int[] {
             1,
@@ -159,7 +160,7 @@
             this.exportButton.Enabled = false;
             this.exportButton.FlatAppearance.BorderSize = 0;
             this.exportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exportButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exportButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exportButton.ForeColor = System.Drawing.Color.White;
             this.exportButton.Location = new System.Drawing.Point(847, 5);
             this.exportButton.Name = "exportButton";
@@ -173,9 +174,9 @@
             this.searchButton.BackColor = System.Drawing.Color.CadetBlue;
             this.searchButton.FlatAppearance.BorderSize = 0;
             this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchButton.ForeColor = System.Drawing.Color.White;
-            this.searchButton.Location = new System.Drawing.Point(375, 4);
+            this.searchButton.Location = new System.Drawing.Point(375, 6);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(97, 24);
             this.searchButton.TabIndex = 4;

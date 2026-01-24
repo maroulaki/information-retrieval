@@ -26,7 +26,7 @@ namespace lucengine
                 directory = Globals.StandardDir;
             }
 
-            if (directory != null)
+            if ((directory != null) && !String.IsNullOrEmpty(q))
             {
                 using (DirectoryReader iReader = DirectoryReader.Open(directory))
                 {

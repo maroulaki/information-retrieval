@@ -26,7 +26,6 @@ namespace lucengine
             TokenStream stream = new LowerCaseFilter(Lucene.Net.Util.LuceneVersion.LUCENE_48, source);
             stream = new StopFilter(Lucene.Net.Util.LuceneVersion.LUCENE_48, stream, stopWords);
             stream = new PorterStemFilter(stream);
-
             return new TokenStreamComponents(source, stream);
         }
 

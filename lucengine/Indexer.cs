@@ -45,7 +45,7 @@ namespace lucengine
 
             // Adding documents
             foreach (Document doc in ParseCACM("cacm/cacm.all")) {
-                indexWriter.UpdateDocument(new Term("id", doc.Get("id")), doc);
+                indexWriter.AddDocument(doc);
             }
             indexWriter.Commit();
             indexWriter.Dispose();
