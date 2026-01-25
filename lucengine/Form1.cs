@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -66,7 +67,7 @@ namespace lucengine
             resultsPanel.Controls.Clear();
 
             // Get results from Searcher class
-            IEnumerable<Document> results = Searcher.SearchIndex(query, topNo);
+            List<Document> results = Searcher.SearchIndex(query, topNo);
 
             if ((results == null) || !results.Any())
             {
@@ -86,16 +87,25 @@ namespace lucengine
 
             resultsPanel.ResumeLayout();
         }
+
         private Panel DrawArticlePanel(Document doc, Query query)
         {
             string titleText = string.IsNullOrEmpty(doc.Get("title")) ? "No Title" : doc.Get("title");
             string authorsText = string.IsNullOrEmpty(doc.Get("authors")) ? "Unknown Authors" : doc.Get("authors");
             string abstractText = string.IsNullOrEmpty(doc.Get("abstract")) ? "No abstract found." : doc.Get("abstract");
 
-           
-            titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + HighlightKeywords(titleText, query, false) + "</div>";
-            authorsText = $"<div style='font-family: Segoe UI; font-size: 14px; color: #D3D3D3;'>" + HighlightKeywords(authorsText, query, false) + "</div>";
-            abstractText = $"<div style='font-family: Segoe UI; font-size: 14px; font-style: italic; color: white;'>" + HighlightKeywords(abstractText, query, true) + "</div>";
+            if (query != null)
+            {
+                titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + HighlightKeywords(titleText, query, false) + "</div>";
+                authorsText = $"<div style='font-family: Segoe UI; font-size: 14px; color: #D3D3D3;'>" + HighlightKeywords(authorsText, query, false) + "</div>";
+                abstractText = $"<div style='font-family: Segoe UI; font-size: 14px; font-style: italic; color: white;'>" + HighlightKeywords(abstractText, query, true) + "</div>";
+            } else
+            {
+                titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + titleText + "</div>";
+                authorsText = $"<div style='font-family: Segoe UI; font-size: 14px; color: #D3D3D3;'>" + authorsText + "</div>";
+                if (abstractText.Length > 100) { abstractText = abstractText.Substring(0, 100) + "..."; }
+                abstractText = $"<div style='font-family: Segoe UI; font-size: 14px; font-style: italic; color: white;'>" + abstractText + "</div>";
+            }
 
             // Construct panel
             Panel panel = new Panel();
@@ -105,6 +115,7 @@ namespace lucengine
             panel.Padding = new Padding(5);
             panel.BackColor = Color.Transparent;
 
+            // Lucene Highlighter works with HTML output, so I will make HTML labels
             // Title label
             HtmlLabel labelTitle = new HtmlLabel();
             labelTitle.Text = titleText;
@@ -134,12 +145,14 @@ namespace lucengine
             similarButton.Location = new Point(panel.Width - 120, labelAuthors.Bottom + 5);
             similarButton.Text = "More like this";
             similarButton.AutoSize = true;
-            // similarButton.Click += DisplaySimilarResults;
+            int.TryParse(doc.Get("LuceneID"), out int LuceneID);
+            similarButton.Tag = LuceneID;
+            similarButton.Click += DisplaySimilarResults;
             similarButton.BringToFront();
             
             panel.Controls.Add(similarButton);
 
-            // Lucene Highlighter works with HTML output, so I will make HTML label for the abstract
+            // Abstract label
             HtmlLabel labelAbstract = new HtmlLabel();
             labelAbstract.Text = abstractText;
             labelAbstract.AutoSize = false;
@@ -182,33 +195,37 @@ namespace lucengine
             return highlightedText;
         }
 
-        //private void DisplaySimilarResults(string ID)
-        //{
-        //    resultsPanel.SuspendLayout();
+        private void DisplaySimilarResults(object sender, EventArgs e)
+        {
+            resultsPanel.SuspendLayout();
 
-        //    // Clear past results
-        //    foreach (Control c in resultsPanel.Controls) c.Dispose();
-        //    resultsPanel.Controls.Clear();
+            // Clear past results
+            foreach (Control c in resultsPanel.Controls) c.Dispose();
+            resultsPanel.Controls.Clear();
 
-        //    // Get results from Searcher class
-        //    IEnumerable<Document> similarResults = Searcher.MoreLikeThis(ID);
+            // Get results from Searcher class
+            Button button = (Button)sender;
+            if (button.Tag is int ID)
+            {
+                List<Document> similarResults = Searcher.MoreLikeThis(ID);
 
-        //    if ((similarResults == null) || !similarResults.Any())
-        //    {
-        //        MessageBox.Show("No articles found.", "Error");
-        //        resultsPanel.ResumeLayout();
-        //        return;
-        //    }
+                if ((similarResults == null) || !similarResults.Any())
+                {
+                    MessageBox.Show("No articles found.", "Error");
+                    resultsPanel.ResumeLayout();
+                    return;
+                }
 
-        //    // Place panels with each article inside the main results panel
-        //    foreach (Document doc in similarResults)
-        //    {
-        //        // I parse the query again because it will be needed for highlighting
-        //        Panel articlePanel = DrawArticlePanel(doc, null);
-        //        resultsPanel.Controls.Add(articlePanel);
-        //    }
+                // Place panels with each article inside the main results panel
+                foreach (Document doc in similarResults)
+                {
+                    // I place the similar articles in the same flowLayoutPanel
+                    Panel articlePanel = DrawArticlePanel(doc, null);
+                    resultsPanel.Controls.Add(articlePanel);
+                }
+            }
 
-        //    resultsPanel.ResumeLayout();
-        //}
+            resultsPanel.ResumeLayout();
+        }
     }
 }

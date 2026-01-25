@@ -18,7 +18,7 @@ namespace lucengine
 {
     public class Searcher
     {
-        public static IEnumerable<Document> SearchIndex(string q, int topNo)
+        public static List<Document> SearchIndex(string q, int topNo)
         {
             Directory directory = null;
             if (Globals.useBM25 && Globals.BM25Dir != null)
@@ -29,35 +29,33 @@ namespace lucengine
                 directory = Globals.StandardDir;
             }
 
-            if ((directory != null) && !String.IsNullOrEmpty(q))
+            if ((directory == null) || String.IsNullOrEmpty(q)) return null;
+
+            List<Document> resultDocs = new List<Document>();
+            using (DirectoryReader iReader = DirectoryReader.Open(directory))
             {
-                using (DirectoryReader iReader = DirectoryReader.Open(directory))
+                IndexSearcher iSearcher = new IndexSearcher(iReader);
+                QueryParser parser = new QueryParser(Lucene.Net.Util.LuceneVersion.LUCENE_48, "content", Globals.Analyzer);
+                Query query = parser.Parse(q);
+                ScoreDoc[] hits = iSearcher.Search(query, null, topNo).ScoreDocs;
+                foreach (ScoreDoc hit in hits)
                 {
-                    IndexSearcher iSearcher = new IndexSearcher(iReader);
-                    QueryParser parser = new QueryParser(Lucene.Net.Util.LuceneVersion.LUCENE_48, "content", Globals.Analyzer);
-                    Query query = parser.Parse(q);
-                    ScoreDoc[] hits = iSearcher.Search(query, null, topNo).ScoreDocs;
-                    foreach (ScoreDoc hit in hits)
-                    {
-                        Document doc = iSearcher.Doc(hit.Doc);
-                        doc.Add(new StringField("LuceneID", hit.Doc.ToString(), Field.Store.YES));
-                        yield return doc;
-                    }
+                    Document doc = iSearcher.Doc(hit.Doc);
+                    doc.Add(new StringField("LuceneID", hit.Doc.ToString(), Field.Store.YES));
+                    resultDocs.Add(doc);
                 }
-            } else
-            {
-                yield break;
-            }
-                    
+                return resultDocs;
+            }       
         }
 
-        public static IEnumerable<Document> MoreLikeThis(int ID)
+        public static List<Document> MoreLikeThis(int ID)
         {
             Directory directory = Globals.useBM25 ? Globals.BM25Dir : Globals.StandardDir;
-            if (directory == null) yield break;
+            if (directory == null) return null;
 
             using (DirectoryReader iReader = DirectoryReader.Open(directory))
             {
+                List<Document> similarDocs =  new List<Document>();
                 IndexSearcher iSearcher = new IndexSearcher(iReader);
                 MoreLikeThis similar = new MoreLikeThis(iReader);
                 similar.Analyzer = Globals.Analyzer;
@@ -71,12 +69,11 @@ namespace lucengine
                 foreach (ScoreDoc hit in hits)
                 {
                     if (hit.Doc == ID) continue; // Skip original article
-
                     Document doc = iSearcher.Doc(hit.Doc);
-
                     doc.Add(new StringField("LuceneID", hit.Doc.ToString(), Field.Store.YES));
-                    yield return doc;
+                    similarDocs.Add(doc);
                 }
+                return similarDocs;
             }
         }
     }
