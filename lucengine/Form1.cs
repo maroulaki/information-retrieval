@@ -93,14 +93,14 @@ namespace lucengine
             string abstractText = string.IsNullOrEmpty(doc.Get("abstract")) ? "No abstract found." : doc.Get("abstract");
 
            
-            titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + HighlightKeywords(titleText, query) + "</div>";
-            authorsText = $"<div style='font-family: Segoe UI; font-size: 14px; color: #D3D3D3;'>" + HighlightKeywords(authorsText, query) + "</div>";
-            abstractText = $"<div style='font-family: Segoe UI; font-size: 14px; font-style: italic; color: white;'>" + HighlightKeywords(abstractText, query) + "</div>";
+            titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + HighlightKeywords(titleText, query, false) + "</div>";
+            authorsText = $"<div style='font-family: Segoe UI; font-size: 14px; color: #D3D3D3;'>" + HighlightKeywords(authorsText, query, false) + "</div>";
+            abstractText = $"<div style='font-family: Segoe UI; font-size: 14px; font-style: italic; color: white;'>" + HighlightKeywords(abstractText, query, true) + "</div>";
 
             // Construct panel
             Panel panel = new Panel();
             panel.Width = resultsPanel.Width - 25; 
-            // panel.Height = 150; 
+            panel.Height = 50; 
             panel.BorderStyle = BorderStyle.None;
             panel.Padding = new Padding(5);
             panel.BackColor = Color.Transparent;
@@ -124,6 +124,21 @@ namespace lucengine
             labelAuthors.Width = panel.Width - 10;
             panel.Controls.Add(labelAuthors);
 
+            // Adding a "More like this" button
+            Button similarButton = new Button();
+            similarButton.FlatStyle = FlatStyle.Flat;
+            similarButton.BackColor = Color.CadetBlue;
+            similarButton.ForeColor = Color.White;
+            similarButton.FlatAppearance.BorderSize = 0;
+            similarButton.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            similarButton.Location = new Point(panel.Width - 120, labelAuthors.Bottom + 5);
+            similarButton.Text = "More like this";
+            similarButton.AutoSize = true;
+            // similarButton.Click += DisplaySimilarResults;
+            similarButton.BringToFront();
+            
+            panel.Controls.Add(similarButton);
+
             // Lucene Highlighter works with HTML output, so I will make HTML label for the abstract
             HtmlLabel labelAbstract = new HtmlLabel();
             labelAbstract.Text = abstractText;
@@ -138,9 +153,9 @@ namespace lucengine
             return panel;
         }
 
-        private string HighlightKeywords(string rawText, Query query)
+        private string HighlightKeywords(string rawText, Query query, bool isAbstract)
         {
-            SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<span style='background-color:yellow; font-weight:bold; color:black'>", "</span>");
+            SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("|||", "///");
             QueryScorer scorer = new QueryScorer(query);
             Highlighter highlighter = new Highlighter(formatter, scorer);
             highlighter.TextFragmenter = new NullFragmenter();
@@ -148,7 +163,52 @@ namespace lucengine
             TokenStream stream = Globals.Analyzer.GetTokenStream("", new StringReader(rawText));
             string highlightedText = highlighter.GetBestFragment(stream, rawText);
 
-            return string.IsNullOrEmpty(highlightedText) ? rawText : highlightedText;
+            if (string.IsNullOrEmpty(highlightedText)) {
+                rawText = rawText.Length > 200 ? rawText.Substring(0, 200) + "..." : rawText;
+                return rawText;
+            }
+
+            // Cropping the text
+            if (isAbstract)
+            {
+                int keywordEndPosition = highlightedText.IndexOf("|||");
+                int start = Math.Max(0, keywordEndPosition - 50);
+                int end = Math.Min(highlightedText.Length, keywordEndPosition + 53);
+                highlightedText = "..." + highlightedText.Substring(start, end - start) + "...";
+            }
+
+            highlightedText = highlightedText.Replace("|||", "<span style='background-color:yellow; font-weight:bold; color:black;'>").Replace("///", "</span>");
+
+            return highlightedText;
         }
+
+        //private void DisplaySimilarResults(string ID)
+        //{
+        //    resultsPanel.SuspendLayout();
+
+        //    // Clear past results
+        //    foreach (Control c in resultsPanel.Controls) c.Dispose();
+        //    resultsPanel.Controls.Clear();
+
+        //    // Get results from Searcher class
+        //    IEnumerable<Document> similarResults = Searcher.MoreLikeThis(ID);
+
+        //    if ((similarResults == null) || !similarResults.Any())
+        //    {
+        //        MessageBox.Show("No articles found.", "Error");
+        //        resultsPanel.ResumeLayout();
+        //        return;
+        //    }
+
+        //    // Place panels with each article inside the main results panel
+        //    foreach (Document doc in similarResults)
+        //    {
+        //        // I parse the query again because it will be needed for highlighting
+        //        Panel articlePanel = DrawArticlePanel(doc, null);
+        //        resultsPanel.Controls.Add(articlePanel);
+        //    }
+
+        //    resultsPanel.ResumeLayout();
+        //}
     }
 }

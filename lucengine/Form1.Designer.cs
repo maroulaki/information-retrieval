@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(lucengine));
             this.indexPanel = new System.Windows.Forms.Panel();
             this.indexButton = new System.Windows.Forms.Button();
             this.BM25Toggle = new System.Windows.Forms.ComboBox();
@@ -90,9 +91,10 @@
             this.resultsPanel.AutoScroll = true;
             this.resultsPanel.Enabled = false;
             this.resultsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.resultsPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resultsPanel.Location = new System.Drawing.Point(12, 178);
             this.resultsPanel.Name = "resultsPanel";
-            this.resultsPanel.Size = new System.Drawing.Size(1040, 691);
+            this.resultsPanel.Size = new System.Drawing.Size(1040, 621);
             this.resultsPanel.TabIndex = 2;
             this.resultsPanel.WrapContents = false;
             // 
@@ -157,14 +159,13 @@
             // exportButton
             // 
             this.exportButton.BackColor = System.Drawing.Color.CadetBlue;
-            this.exportButton.Enabled = false;
             this.exportButton.FlatAppearance.BorderSize = 0;
             this.exportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exportButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exportButton.ForeColor = System.Drawing.Color.White;
             this.exportButton.Location = new System.Drawing.Point(847, 5);
             this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(187, 24);
+            this.exportButton.Size = new System.Drawing.Size(187, 26);
             this.exportButton.TabIndex = 6;
             this.exportButton.Text = "Export";
             this.exportButton.UseVisualStyleBackColor = false;
@@ -180,7 +181,7 @@
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(97, 24);
             this.searchButton.TabIndex = 4;
-            this.searchButton.Text = "Search";
+            this.searchButton.Text = "Search ⌕";
             this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
@@ -199,11 +200,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.ClientSize = new System.Drawing.Size(1064, 881);
+            this.ClientSize = new System.Drawing.Size(1064, 811);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.resultsPanel);
             this.Controls.Add(this.indexPanel);
             this.Controls.Add(this.logo);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "lucengine";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "lucengine";
