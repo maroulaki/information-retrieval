@@ -227,5 +227,18 @@ namespace lucengine
 
             resultsPanel.ResumeLayout();
         }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Benchmark.Evaluate();
+                MessageBox.Show("Results saved.", "Succes");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong: " + ex.Message, "Error");
+            }
+        }
     }
 }

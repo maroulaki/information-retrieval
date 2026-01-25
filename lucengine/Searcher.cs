@@ -36,7 +36,15 @@ namespace lucengine
             {
                 IndexSearcher iSearcher = new IndexSearcher(iReader);
                 QueryParser parser = new QueryParser(Lucene.Net.Util.LuceneVersion.LUCENE_48, "content", Globals.Analyzer);
-                Query query = parser.Parse(q);
+                Query query;
+                try
+                {
+                    query = parser.Parse(q);
+                }
+                catch (ParseException)
+                {
+                    query = parser.Parse(QueryParser.Escape(q));
+                }
                 ScoreDoc[] hits = iSearcher.Search(query, null, topNo).ScoreDocs;
                 foreach (ScoreDoc hit in hits)
                 {

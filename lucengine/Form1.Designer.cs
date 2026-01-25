@@ -169,6 +169,7 @@
             this.exportButton.TabIndex = 6;
             this.exportButton.Text = "Export";
             this.exportButton.UseVisualStyleBackColor = false;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // searchButton
             // 

@@ -133,6 +133,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Benchmark.cs" />
     <Compile Include="CACMAnalyzer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -163,9 +164,6 @@
     </None>
     <None Include="cacm\cite.info" />
     <None Include="cacm\qrels.text">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="cacm\query.text">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="cacm\README" />
@@ -200,6 +198,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cacm\common_words.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cacm\qrels_alt.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cacm\query.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
