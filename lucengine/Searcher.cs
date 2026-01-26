@@ -35,6 +35,15 @@ namespace lucengine
             using (DirectoryReader iReader = DirectoryReader.Open(directory))
             {
                 IndexSearcher iSearcher = new IndexSearcher(iReader);
+                if (Globals.useBM25)
+                {
+                    iSearcher.Similarity = new Lucene.Net.Search.Similarities.BM25Similarity();
+                }
+                else
+                {
+                    iSearcher.Similarity = new Lucene.Net.Search.Similarities.DefaultSimilarity();
+                }
+                
                 QueryParser parser = new QueryParser(Lucene.Net.Util.LuceneVersion.LUCENE_48, "content", Globals.Analyzer);
                 Query query;
                 try
@@ -65,6 +74,14 @@ namespace lucengine
             {
                 List<Document> similarDocs =  new List<Document>();
                 IndexSearcher iSearcher = new IndexSearcher(iReader);
+                if (Globals.useBM25)
+                {
+                    iSearcher.Similarity = new Lucene.Net.Search.Similarities.BM25Similarity();
+                }
+                else
+                {
+                    iSearcher.Similarity = new Lucene.Net.Search.Similarities.DefaultSimilarity();
+                }
                 MoreLikeThis similar = new MoreLikeThis(iReader);
                 similar.Analyzer = Globals.Analyzer;
                 similar.FieldNames = new[] { "title", "authors", "abstract" };

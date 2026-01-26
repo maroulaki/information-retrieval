@@ -40,8 +40,11 @@ namespace lucengine
             IndexWriterConfig config = new IndexWriterConfig(Lucene.Net.Util.LuceneVersion.LUCENE_48, analyzer);
             if (Globals.useBM25) {
                 config.Similarity = new Lucene.Net.Search.Similarities.BM25Similarity();
-            } 
-            IndexWriter indexWriter = new IndexWriter(directory, config);
+            } else
+            {
+                config.Similarity = new Lucene.Net.Search.Similarities.DefaultSimilarity();
+            }
+                IndexWriter indexWriter = new IndexWriter(directory, config);
 
             // Adding documents
             foreach (Document doc in ParseCACM("cacm/cacm.all")) {

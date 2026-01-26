@@ -107,11 +107,13 @@ namespace lucengine
                 // If no relevant docs are given, skip
                 if (!qrels.ContainsKey(query.ID)) continue;
                 
+                // Get the relevant documents for each query
                 HashSet<int> relevantDocs = qrels[query.ID];
                 int totalRel = relevantDocs.Count;
                 List<Document> hits = Searcher.SearchIndex(query.text, 50);
                 int relevant = 0;
 
+                // Calculate precision and recall at each hit
                 for (int i = 0; i < hits.Count; i++)
                 {
                     int rank = i + 1;
