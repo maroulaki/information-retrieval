@@ -37,6 +37,7 @@ namespace lucengine
             {
                 useBM25 = true;
             }
+            // Create the Index from CACM
             Globals.useBM25 = useBM25;
             Indexer.CreateIndex();
 
@@ -90,10 +91,12 @@ namespace lucengine
 
         private Panel DrawArticlePanel(Document doc, Query query)
         {
+            // Fecth information from the docs
             string titleText = string.IsNullOrEmpty(doc.Get("title")) ? "No Title" : doc.Get("title");
             string authorsText = string.IsNullOrEmpty(doc.Get("authors")) ? "Unknown Authors" : doc.Get("authors");
             string abstractText = string.IsNullOrEmpty(doc.Get("abstract")) ? "No abstract found." : doc.Get("abstract");
 
+            // HTML text for the article panels
             if (query != null)
             {
                 titleText = $"<div style='font-family: Segoe UI; font-size: 20px; font-weight: bold; color: white;'>" + HighlightKeywords(titleText, query, false) + "</div>";
@@ -168,11 +171,13 @@ namespace lucengine
 
         private string HighlightKeywords(string rawText, Query query, bool isAbstract)
         {
+            // Create objects to begin highlighting, wrap the keywords
             SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("|||", "///");
             QueryScorer scorer = new QueryScorer(query);
             Highlighter highlighter = new Highlighter(formatter, scorer);
             highlighter.TextFragmenter = new NullFragmenter();
 
+            // Find keywords in text
             TokenStream stream = Globals.Analyzer.GetTokenStream("", new StringReader(rawText));
             string highlightedText = highlighter.GetBestFragment(stream, rawText);
 
@@ -181,7 +186,7 @@ namespace lucengine
                 return rawText;
             }
 
-            // Cropping the text
+            // Cropping the text 
             if (isAbstract)
             {
                 int keywordEndPosition = highlightedText.IndexOf("|||");
@@ -190,6 +195,7 @@ namespace lucengine
                 highlightedText = "..." + highlightedText.Substring(start, end - start) + "...";
             }
 
+            //Add styling
             highlightedText = highlightedText.Replace("|||", "<span style='background-color:yellow; font-weight:bold; color:black;'>").Replace("///", "</span>");
 
             return highlightedText;
