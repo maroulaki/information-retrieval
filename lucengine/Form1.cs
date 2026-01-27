@@ -238,6 +238,7 @@ namespace lucengine
         {
             try
             {
+                // When Export is pressed, the Benchmark class will run Evaluate() for the current config (TFIDF or BM25)
                 Benchmark.Evaluate();
                 MessageBox.Show("Results saved.", "Succes");
             }

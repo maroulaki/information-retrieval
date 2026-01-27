@@ -29,7 +29,7 @@ namespace lucengine
             }
             RAMDirectory directory = new RAMDirectory();
 
-            // Load common_words.txt
+            // Load common_words.txt to pass into the analyzer
             StreamReader commonWordsFile = new StreamReader("cacm/common_words.txt");
             CharArraySet stopWordsSet = WordlistLoader.GetWordSet(commonWordsFile, Lucene.Net.Util.LuceneVersion.LUCENE_48);
             commonWordsFile.Close();

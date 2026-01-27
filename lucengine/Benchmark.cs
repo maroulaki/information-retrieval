@@ -13,6 +13,7 @@ namespace lucengine
 {
     public class Benchmark
     {
+        // A class to story a query's (from query.txt) data
         public class BenchmarkQuery
         {
             public int ID { get; set; }
@@ -127,12 +128,10 @@ namespace lucengine
                     csv.AppendLine($"{query.ID},{rank},{precision},{recall}");
                 }
             }
+
+            // Save results to a .csv file. Graphing will be done in excel
             string fileName = Globals.useBM25 ? "BM25_PR.csv" : "TFIDF_PR.csv";
             File.WriteAllText(fileName,csv.ToString());
         }
-
-
-
-
     }
 }
