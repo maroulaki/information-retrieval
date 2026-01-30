@@ -47,7 +47,6 @@ namespace lucengine
             indexPanel.Enabled = false;
         }
 
-
         private void searchButton_Click(object sender, EventArgs e)
         {
             DisplayResults(searchBox.Text, (int)articleNo.Value);

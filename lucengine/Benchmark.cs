@@ -101,7 +101,7 @@ namespace lucengine
             StringBuilder csv = new StringBuilder();
 
             // Adding the header
-            csv.AppendLine("queryID,Rank,Precision,Recall");
+            csv.AppendLine("queryID,Precision,Recall");
 
             foreach (BenchmarkQuery query in queries)
             {
@@ -114,18 +114,34 @@ namespace lucengine
                 List<Document> hits = Searcher.SearchIndex(query.text, 50);
                 int relevant = 0;
 
-                // Calculate precision and recall at each hit
+                // First calculate precision and recall at each hit
+                List<Tuple<double,double>> PR_points = new List<Tuple<double,double>>();
                 for (int i = 0; i < hits.Count; i++)
                 {
-                    int rank = i + 1;
                     Document doc = hits[i];
                     int.TryParse(doc.Get("id"), out int docID);
 
                     if (relevantDocs.Contains(docID)) relevant++;
-                    double precision = (double)relevant / rank;
+                    double precision = (double)relevant / (i + 1);
                     double recall = (double)relevant / totalRel;
+                    PR_points.Add(new Tuple<double,double>(recall, precision));
+                }
 
-                    csv.AppendLine($"{query.ID},{rank},{precision},{recall}");
+                // Then calculate 11-point interpolated precision
+                for (int i = 0; i < 10; i++)
+                {
+                    double targetRecall = i / 10.0;
+                    double maxPrecision = 0.0;
+
+                    foreach (var point in PR_points)
+                    {
+                        if (point.Item1 > targetRecall)
+                        {
+                            if (point.Item2 > maxPrecision) maxPrecision = point.Item2;
+                        }
+                    }
+
+                    csv.AppendLine($"{query.ID},{targetRecall:F1},{maxPrecision:F4}");
                 }
             }
 

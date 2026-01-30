@@ -44,7 +44,7 @@ namespace lucengine
             {
                 config.Similarity = new Lucene.Net.Search.Similarities.DefaultSimilarity();
             }
-                IndexWriter indexWriter = new IndexWriter(directory, config);
+            IndexWriter indexWriter = new IndexWriter(directory, config);
 
             // Adding documents
             foreach (Document doc in ParseCACM("cacm/cacm.all")) {
