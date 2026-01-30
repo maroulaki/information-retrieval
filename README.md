@@ -1,5 +1,5 @@
 # Ανάκτηση Πληροφορίας στον Παγκόσμιο Ιστό - Απαλλακτική Εργασία - Documentation
-### Ομάδα: Χαραλαμπία Μαστέλλου Π20212, Μαρία Τιμολόγου Π21167
+### Ομάδα: -
 ![alt text](logo-1.png)
 Για την υλοποίηση του application επιλέξαμε το .NET Framework με το port της Lucene για C#, το Lucene.NET. Επίσης χρησιμοποιήσαμε ένα βοηθητικό πακέτο για HTML formating. Τα nuget πακέτα που χρησιμοποιήσαμε: Lucene.Net, Lucene.Net.Analysis.Common, Lucene.Net.Highlighter, Lucene.Net.Memory, Lucene.Net.Queries, Lucene.Net.QueryParser, Lucene.Net.Sandbox, HtmlRenderer.WinForms
 
