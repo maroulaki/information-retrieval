@@ -136,11 +136,6 @@
             // 
             this.articleNo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.articleNo.Location = new System.Drawing.Point(326, 6);
-            this.articleNo.Maximum = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
             this.articleNo.Minimum = new decimal(new int[] {
             1,
             0,

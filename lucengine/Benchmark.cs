@@ -101,7 +101,7 @@ namespace lucengine
             StringBuilder csv = new StringBuilder();
 
             // Adding the header
-            csv.AppendLine("queryID,Precision,Recall");
+            csv.AppendLine("queryID,Recall,Precision");
 
             foreach (BenchmarkQuery query in queries)
             {
@@ -128,16 +128,16 @@ namespace lucengine
                 }
 
                 // Then calculate 11-point interpolated precision
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i <= 10; i++)
                 {
                     double targetRecall = i / 10.0;
                     double maxPrecision = 0.0;
 
                     foreach (var point in PR_points)
                     {
-                        if (point.Item1 > targetRecall)
+                        if (point.Item1 >= targetRecall)
                         {
-                            if (point.Item2 > maxPrecision) maxPrecision = point.Item2;
+                            if (point.Item2 >= maxPrecision) maxPrecision = point.Item2;
                         }
                     }
 

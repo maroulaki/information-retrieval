@@ -1,4 +1,4 @@
-# Ανάκτηση Πληροφορίας στον Παγκόσμιο Ιστό - Απαλλακτική Εργασία - Documentation
+# Ανάκτηση Πληροφορίας και Αναζήτηση στον Παγκόσμιο Ιστό - Απαλλακτική Εργασία - Documentation
 ### Ομάδα: -
 ![alt text](logo-1.png)
 Για την υλοποίηση του application επιλέξαμε το .NET Framework με το port της Lucene για C#, το Lucene.NET. Επίσης χρησιμοποιήσαμε ένα βοηθητικό πακέτο για HTML formating. Τα nuget πακέτα που χρησιμοποιήσαμε: Lucene.Net, Lucene.Net.Analysis.Common, Lucene.Net.Highlighter, Lucene.Net.Memory, Lucene.Net.Queries, Lucene.Net.QueryParser, Lucene.Net.Sandbox, HtmlRenderer.WinForms
@@ -80,11 +80,40 @@ public static List<Document> MoreLikeThis(int ID)
 H MoreLikeThis() δέχεται ως παράμετρο το internal ID ενός Document σε μορφή integer. Αρχικά φορτώνεται το αντίστοιχο directory (ανάλογα με το μοντέλο που χρησιμοποιείται). Έπειτα όπως και στην SearchIndex, δημιουργείται ένα List για τα αποτελέσματα και αρχικοποιείται ο DirectoryReader και από αυτόν ο IndexSearcher (πάλι ανάλογα με το μοντέλο που χρησιμοποιείται). Για να ανακτηθούν συναφή Documents, δημιουργείται ένα αντικείμενο της κλάσης MoreLikeThis που χρησιμοποιεί τον Analyzer από το indexing, και χρησιμοποιεί τα "title", "authors" και "abstract" FieldNames. Το Query query που θα επιστρέψει τα όμοια Documents χτίζεται από τη συνάρτηση MoreLikeThis.Like() και εισάγεται στην IndexSearcher.Search(). Αποφασίσαμε κάθε φορά να επιστρέφουμε 10 παρόμοια Documents. Στα hits που επιστρέφονται, ακολουθείται επαναληπτικά η ίδια διαδικασία με την SearchIndex, αλλά εάν το αρχικό Document εμφανιστεί στα αποτελέσματα, παραβλέπεται.
 
 ### Benchmark.cs
-Η κλάση Benchmark περιέχει τις μεθόδους που μετρούν την απόδοση στην ανάκτηση για κάθε μοντέλο και εξάγουν τα αποτελέσματα σε αρχεία .csv ώστε να σχηματιστούν τα γραφήματα. Ορίζουμε την κλάση BenchmarkQuery{int ID, string text} για να αποθηκεύουμε τα queries από το αρχείο query.text.
+Η κλάση Benchmark περιέχει τις μεθόδους που μετρούν την απόδοση στην ανάκτηση για κάθε μοντέλο και εξάγουν τα αποτελέσματα σε αρχεία .csv ώστε να σχηματιστούν τα γραφήματα. Ορίζουμε την κλάση BenchmarkQuery{int ID, string text} για να αποθηκεύουμε τα queries από το αρχείο query.text. Οι μέθοδοι LoadQueries και LoadRelevant είναι βοηθητικές για την Evaluate.
 
 ```cs
 public static List<BenchmarkQuery> LoadQueries()
 ```
+Η LoadQueries επιστρέφει ένα List τύπου BenchmarkQuery με όλα τα queries που διάβασε από το αρχείο query.text. Αρχικά ορίζεται το List στο οποίο θα αποθηκευτούν και αρχικοποιούνται μια boolean μεταβλητή ελέγχου για να γνωρίζει ο reader εάν υπάρχει query σε εκείνη τη γραμμή, ένα StringBuilder ως buffer για το κείμενό της και ένα αντικείμενο BenchmarkQuery. Επαναληπτικά, για κάθε γραμμή του αρχείου, μόλις εντοπιστεί η συμβολοσειρά ".", ελέγχεται αν είναι ".Ι", οπότε το προηγούμενο BenchmarkQuery αποθηκεύεται στο List και δημιουργείται νέο, ή ".W", οπότε η μεταβλητή ελέγχου γίνεται αληθής και η επόμενη γραμμή θα συνενωθεί στο StringBuilder του query. Οι υπόλοιπες συμβολοσειρές που ξεκινούν με "." δε μας ενδιαφέρουν.
+```cs
+public static Dictionary<int, HashSet<int>> LoadRelevant()
+```
+H LoadRelevant επιστρέφει ένα Dictionary με key τον integer που αντιπροσωπεύει το ID ενός query και value ένα HashSet τύπου integer για τα ID των συναφή Documents με το αντίστοιχο query. Αφού ανοιχτεί το qrels.text, επαναληπτικά κάθε γραμμή χωρίζεται σε έναν πίνακα συμβολοσειρών (["12","5354",...]) όπου το πρώτο στοιχείο αποθηκεύεται ως int στη θέση key στο dictionary και το δεύτερο ως int στη αντίστοιχο HashSet της θέσης value.
+```cs
+public static void Evaluate()
+```
+H Evaluate γράφει τις τιμές που χρειάζονται για τα γραφήματα ακρίβειας-ανάκλησης κάθε query με το μοντέλο που χρησιμοποιείται εκείνη τη στιγμή απο το application σε ένα αρχείο .csv. Αρχικά, ένα List και ένα Dictionary χρησιμοποιούνται για να φορτωθούν τα queries και τα συναφή Documents και αρχικοποιείται ένα StringBuilder για το περιεχόμενο του .csv. Επαναληπτικά για κάθε query, υπολογίζεται ο αριθμός των συναφών Documents από το qrels.text και μέσω της Searcher.SearchIndex() ανακτάται ένα List με τα Documents που επέστρεψε η αναζήτηση με βάση το query μέσα στο application. Επιλέξαμε να ζητήσουμε τα πρώτα 50 αποτελέσματα. Για κάθε αποτέλεσμα ενός query, δημιουργείται προσωρινά ένα Tuple<double,double> δύο πραγματικών αριθμών και εάν το ID του τρέχοντος Document περιέχεται στα συναφή, ο αριθμός των συναφών που ανακτήθηκαν αυξάνεται. Υπολογίζονται τα 
+$precision=\frac{relevant so far}{total retrieved}$ και $recall=\frac{relevant so far}{total relevant from file}$ και προστίθενται σε ένα List. Έπειτα, σε ένα βρόχο 11 επαναλήψεων, εφαρμόζουμε τον τύπο $Pinterp(r)=max(r'\geq r)p(r')$ για να σχηματιστούν τα 11 σημεία της καμπύλης. Μετά προστίθεται μια γραμμή {queryID,r,Pinterp} στο αρχείο .csv
+
+### Form1.cs
+Σε αυτή την κλάση ορίζονται όλες οι μέθοδοι που συνδέουν τις προηγούμενες κλάσεις με το γραφικό περιβάλλον.
+```cs
+private void DisplayResults(string query, int topNo)
+```
+Η DisplayResults καλείται όταν πατιέται το Search button, και δέχεται ως παραμέτρους το string του query από το searchbar και έναν integer για τον αριθμό αποτελεσμάτων. Αρχικά το FlowLayoutPanel των αποτελεσμάτων καθαρίζει από προηγούμενα άρθρα και αφού κληθεί η Searcher.SearchIndex() με τις παραμέτρους που δόθηκαν, για κάθε Document καλείται η QueryParser.Parse() και μετά η DrawArticlePanel() με παραμέτρους το Document και το query (ώστε να γίνει η υπογράμμιση). Έπειτα το Panel προστίθεται στο FlowLayoutPanel των αποτελεσμάτων.
+```cs
+private Panel DrawArticlePanel(Document doc, Query query)
+```
+Η DrawArticlePanel δέχεται ως παραμέτρους ένα Document και το query από το οποίο ανακτήθηκε και επιστρέφει το Panel του. Αφότου εξάγει τις βασικές πληροφορίες από το Document σε strings, καλεί για κάθε ένα από τα Fields την HighlightKeywords() περνώντας τα ως παραμέτρους μαζί με το query. Τα αποτελέσματα αποθηκεύονται σε HtmlLabels. Προστίθεται επίσης ένα button "More like this" στο οποίο δεσμεύεται η DisplaySimilarResults() και το Tag του περιέχει το εσωτερικό ID του Document.
+```cs
+private string HighlightKeywords(string rawText, Query query, bool isAbstract)
+```
+Η HighlightKeywords δέχεται ως παραμέτρους κείμενο σε string, ένα αντικείμενο Query και μία boolean μεταβλητή που υποδεικνύει αν το κείμενο είναι abstract. Δημιουργούνται ένας SimpleHTMLFormatter με (με dummy συμβολοσειρές που περικλύουν ένα keyword), ένας QueryScorer από το query, ένας Highlighter (από τον formatter και τον scorer) αρχικοποιείται ο TextFragmenter του. Με τη βοήθεια του Analyzer που έχει οριστεί στο indexing, δημιουργείται ένα TokenStream από το κείμενο. Από αυτό παράγεται το επισημασμένο κείμενο μέσω της Highlighter.GetBestFragment(). Μετά από αυτό, εάν δεν υπήρχαν επισημάνσεις στο κείμενο και είναι αρκετά μεγάλο, κόβεται στους 200 χαρακτήρες. Εάν είναι abstract, κρατάμε την πρώτη εμφάνιση ενός keyword και το υπόλοιπο κόβεται επίσης. Στο τέλος οι dummy συμβολοσειρές γύρω από τα keywords αντικαθίστανται με css.
+```cs
+private void DisplaySimilarResults(object sender, EventArgs e)
+```
+Η DisplaySimilarResults καλείται κάθε φορά που πατιέται ένα button "More like this" δίπλα σε κάποιο άρθρο. Αφού αφαιρεθούν όλα τα Panel που υπάρχουν εκείνη τη στιγμή στο FlowLayoutPanel, καλείται η Searcher.MoreLikeThis() με παράμετρο το ID που ανακτάται από το button. Εάν το List με τα Documents που επιστράφηκε δεν είναι κενό, προστίθενται επαναληπτικά στο FlowLayoutPanel μέσω της DrawArticlePanel().
 
 #### Σημειώσεις:
 - Τα αρχεία query.text και qrels.text μετονομάστηκαν σε query.txt και qrels_alt.txt. Το qrels_alt.txt ανοίχτηκε πρώτα στο Excel για να διορθωθούν θέματα στοίχισης.
